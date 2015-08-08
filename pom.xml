@@ -57,6 +57,16 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+
+    <repository>
+      <id>cloudera</id>
+      <name>Cloudera Repository (for CDH; Zookeeper, HDFS, MapReduce, and HBase)</name>
+      <layout>default</layout>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <parent>
@@ -79,7 +89,7 @@
     <top.dir>${project.basedir}</top.dir>
 
     <!-- Hadoop Versions -->
-    <hbase.version>1.0.1</hbase.version>
+    <hbase.version>1.0.0-cdh5.4.4</hbase.version>
     <hadoop-two.version>2.5.1</hadoop-two.version>
 
     <!-- Dependency versions -->
