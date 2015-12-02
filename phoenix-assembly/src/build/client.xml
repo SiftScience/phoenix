@@ -56,7 +56,7 @@
         <include>jline:jline</include>
         <include>sqlline:sqlline</include>
         <include>org.apache.hbase:hbase*</include>
-        <include>org.apache.htrace:htrace-core</include>
+        <include>org.cloudera.htrace:htrace-core</include>
         <include>io.netty:netty-all</include>
         <include>commons-codec:commons-codec</include>
       </includes>

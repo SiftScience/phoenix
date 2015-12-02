@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.htrace.Span;
-import org.apache.htrace.TimelineAnnotation;
+import org.cloudera.htrace.Span;
+import org.cloudera.htrace.TimelineAnnotation;
 import org.apache.phoenix.util.StringUtil;
 
 /**
@@ -111,8 +111,4 @@ public class NullSpan implements Span {
     return null;
   }
 
-  @Override
-  public String toJson() {
-    return StringUtil.EMPTY_STRING;
-  }
 }

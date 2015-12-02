@@ -37,9 +37,10 @@ import org.apache.hadoop.hbase.coprocessor.RegionCoprocessorEnvironment;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.regionserver.HRegion;
 import org.apache.hadoop.hbase.regionserver.RegionScanner;
+import org.apache.hadoop.hbase.regionserver.ScannerContext;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.htrace.Span;
-import org.apache.htrace.Trace;
+import org.cloudera.htrace.Span;
+import org.cloudera.htrace.Trace;
 import org.apache.phoenix.execute.TupleProjector;
 import org.apache.phoenix.expression.Expression;
 import org.apache.phoenix.expression.KeyValueColumnExpression;
@@ -264,9 +265,9 @@ abstract public class BaseScannerRegionObserver extends BaseRegionObserver {
             }
 
             @Override
-            public boolean next(List<Cell> result, int limit) throws IOException {
+            public boolean next(List<Cell> result, ScannerContext scannerContext) throws IOException {
                 try {
-                    return s.next(result, limit);
+                    return s.next(result, scannerContext);
                 } catch (Throwable t) {
                     ServerUtil.throwIOException(c.getEnvironment().getRegion().getRegionNameAsString(), t);
                     return false; // impossible
@@ -326,9 +327,9 @@ abstract public class BaseScannerRegionObserver extends BaseRegionObserver {
             }
 
             @Override
-            public boolean nextRaw(List<Cell> result, int limit) throws IOException {
+            public boolean nextRaw(List<Cell> result, ScannerContext scannerContext) throws IOException {
                 try {
-                    boolean next = s.nextRaw(result, limit);
+                    boolean next = s.nextRaw(result, scannerContext);
                     if (result.size() == 0) {
                         return next;
                     }
@@ -388,6 +389,11 @@ abstract public class BaseScannerRegionObserver extends BaseRegionObserver {
             @Override
             public long getMaxResultSize() {
                 return s.getMaxResultSize();
+            }
+
+            @Override
+            public int getBatch() {
+                return s.getBatch();
             }
         };
     }

@@ -89,7 +89,7 @@
     <top.dir>${project.basedir}</top.dir>
 
     <!-- Hadoop Versions -->
-    <hbase.version>1.0.0-cdh5.4.4</hbase.version>
+    <hbase.version>1.0.0-cdh5.5.0</hbase.version>
     <hadoop-two.version>2.5.1</hadoop-two.version>
 
     <!-- Dependency versions -->
@@ -115,7 +115,7 @@
     <snappy.version>0.3</snappy.version>
     <netty.version>4.0.23.Final</netty.version>
     <commons-codec.version>1.7</commons-codec.version>
-    <htrace.version>3.1.0-incubating</htrace.version>
+    <htrace.version>2.05</htrace.version>
     <collections.version>3.2.1</collections.version>
     <jodatime.version>2.7</jodatime.version>
     <joni.version>2.1.2</joni.version>
@@ -709,7 +709,7 @@
         <version>${commons-logging.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.apache.htrace</groupId>
+        <groupId>org.cloudera.htrace</groupId>
         <artifactId>htrace-core</artifactId>
         <version>${htrace.version}</version>
       </dependency>

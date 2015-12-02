@@ -322,8 +322,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.htrace</groupId>
+      <groupId>org.cloudera.htrace</groupId>
       <artifactId>htrace-core</artifactId>
+      <version>${htrace.version}</version>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>

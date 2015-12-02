@@ -120,11 +120,6 @@ public class SpillableGroupByCache implements GroupByCache {
 
     /**
      * Instantiates a Loading LRU Cache that stores key / aggregator[] tuples used for group by queries
-     * 
-     * @param estSize
-     * @param estValueSize
-     * @param aggs
-     * @param ctxt
      */
     public SpillableGroupByCache(final RegionCoprocessorEnvironment env, ImmutableBytesWritable tenantId,
             ServerAggregators aggs, final int estSizeNum) {
@@ -376,6 +371,11 @@ public class SpillableGroupByCache implements GroupByCache {
             @Override
             public long getMaxResultSize() {
               return s.getMaxResultSize();
+            }
+
+            @Override
+            public int getBatch() {
+                return s.getBatch();
             }
         };
     }

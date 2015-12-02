@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import org.apache.phoenix.iterate.DelegateResultIterator;
 import org.apache.phoenix.iterate.ResultIterator;
 import org.apache.phoenix.schema.tuple.Tuple;
-import org.apache.htrace.TraceScope;
+import org.cloudera.htrace.TraceScope;
 
 /**
  * A simple iterator that closes the trace scope when the iterator is closed.

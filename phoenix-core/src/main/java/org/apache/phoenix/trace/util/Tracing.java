@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.htrace.HTraceConfiguration;
+import org.cloudera.htrace.HTraceConfiguration;
 import org.apache.phoenix.call.CallRunner;
 import org.apache.phoenix.call.CallWrapper;
 import org.apache.phoenix.jdbc.PhoenixConnection;
@@ -37,14 +37,14 @@ import org.apache.phoenix.parse.TraceStatement;
 import org.apache.phoenix.query.QueryServices;
 import org.apache.phoenix.query.QueryServicesOptions;
 import org.apache.phoenix.trace.TraceMetricSource;
-import org.apache.htrace.Sampler;
-import org.apache.htrace.Span;
-import org.apache.htrace.Trace;
-import org.apache.htrace.TraceScope;
-import org.apache.htrace.Tracer;
-import org.apache.htrace.impl.ProbabilitySampler;
-import org.apache.htrace.wrappers.TraceCallable;
-import org.apache.htrace.wrappers.TraceRunnable;
+import org.cloudera.htrace.Sampler;
+import org.cloudera.htrace.Span;
+import org.cloudera.htrace.Trace;
+import org.cloudera.htrace.TraceScope;
+import org.cloudera.htrace.Tracer;
+import org.cloudera.htrace.impl.ProbabilitySampler;
+import org.cloudera.htrace.wrappers.TraceCallable;
+import org.cloudera.htrace.wrappers.TraceRunnable;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
@@ -54,6 +54,8 @@ import com.sun.istack.NotNull;
  * Helper class to manage using the {@link Tracer} within Phoenix
  */
 public class Tracing {
+
+    public static final String SAMPLER_FRACTION_CONF_KEY = "sampler.fraction";
 
     private static final Log LOG = LogFactory.getLog(Tracing.class);
 
@@ -116,9 +118,11 @@ public class Tracing {
                 public Sampler<?> apply(ConfigurationAdapter conf) {
                     // get the connection properties for the probability information
                     Map<String, String> items = new HashMap<String, String>();
-                    items.put(ProbabilitySampler.SAMPLER_FRACTION_CONF_KEY,
+                    items.put(SAMPLER_FRACTION_CONF_KEY,
                             conf.get(QueryServices.TRACING_PROBABILITY_THRESHOLD_ATTRIB, Double.toString(QueryServicesOptions.DEFAULT_TRACING_PROBABILITY_THRESHOLD)));
-                    return new ProbabilitySampler(HTraceConfiguration.fromMap(items));
+                    HTraceConfiguration config = HTraceConfiguration.fromMap(items);
+                    double threshold = Double.parseDouble(config.get(SAMPLER_FRACTION_CONF_KEY));
+                    return new ProbabilitySampler(threshold);
                 }
             };
 
@@ -140,8 +144,10 @@ public class Tracing {
           return Sampler.ALWAYS;
       } else if (samplingRate < 1.0 && samplingRate > 0.0) {
           Map<String, String> items = new HashMap<String, String>();
-          items.put(ProbabilitySampler.SAMPLER_FRACTION_CONF_KEY, Double.toString(samplingRate));
-          return new ProbabilitySampler(HTraceConfiguration.fromMap(items));
+          items.put(SAMPLER_FRACTION_CONF_KEY, Double.toString(samplingRate));
+          HTraceConfiguration config = HTraceConfiguration.fromMap(items);
+          double threshold = Double.parseDouble(config.get(SAMPLER_FRACTION_CONF_KEY));
+          return new ProbabilitySampler(threshold);
       } else {
           return Sampler.NEVER;
       }

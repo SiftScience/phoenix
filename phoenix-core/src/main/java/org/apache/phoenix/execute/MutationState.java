@@ -63,8 +63,8 @@ import org.apache.phoenix.util.LogUtil;
 import org.apache.phoenix.util.PhoenixRuntime;
 import org.apache.phoenix.util.SQLCloseable;
 import org.apache.phoenix.util.ServerUtil;
-import org.apache.htrace.Span;
-import org.apache.htrace.TraceScope;
+import org.cloudera.htrace.Span;
+import org.cloudera.htrace.TraceScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -307,7 +307,6 @@ public class MutationState implements SQLCloseable {
      * Validates that the meta data is valid against the server meta data if we haven't yet done so.
      * Otherwise, for every UPSERT VALUES call, we'd need to hit the server to see if the meta data
      * has changed.
-     * @param connection
      * @return the server time to use for the upsert
      * @throws SQLException if the table or any columns no longer exist
      */

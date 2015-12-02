@@ -22,11 +22,11 @@ import org.apache.hadoop.metrics2.*;
 import org.apache.hadoop.metrics2.lib.Interns;
 import org.apache.phoenix.metrics.MetricInfo;
 import org.apache.phoenix.metrics.Metrics;
-import org.apache.htrace.HTraceConfiguration;
-import org.apache.htrace.Span;
-import org.apache.htrace.SpanReceiver;
-import org.apache.htrace.TimelineAnnotation;
-import org.apache.htrace.impl.MilliSpan;
+import org.cloudera.htrace.HTraceConfiguration;
+import org.cloudera.htrace.Span;
+import org.cloudera.htrace.SpanReceiver;
+import org.cloudera.htrace.TimelineAnnotation;
+import org.cloudera.htrace.impl.MilliSpan;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,8 +53,8 @@ import static org.apache.phoenix.metrics.MetricInfo.*;
  *   <ul>
  *     <li>{@link MetricInfo#PARENT} is the id of the parent of this span. (Root span is
  *     {@link Span#ROOT_SPAN_ID}).</li>
- *     <li>{@value MetricInfo#START} is the start time of the span</li>
- *     <li>{@value MetricInfo#END} is the end time of the span</li>
+ *     <li>{@value MetricInfo#} is the start time of the span</li>
+ *     <li>{@value MetricInfo#} is the end time of the span</li>
  *   </ul></li>
  *   <li>Each span's messages are contained in a {@link MetricsTag} with the same name as above and a
  *   generic counter for the number of messages (to differentiate messages and provide timeline
@@ -180,4 +180,10 @@ public class TraceMetricSource implements SpanReceiver, MetricsSource {
       tags.add(metricsTag);
     }
   }
+
+  @Override
+  public void configure(HTraceConfiguration conf) {
+    // noop
+  }
+
 }
