@@ -17,9 +17,8 @@
  */
 package org.apache.phoenix.trace;
 
-import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.Pair;
-import org.cloudera.htrace.Span;
+import org.apache.htrace.Span;
 
 /**
  * Utilities for tracing
@@ -34,11 +33,11 @@ public class TracingUtils {
     public static final String METRICS_MARKER_CONTEXT = "marker";
 
     public static void addAnnotation(Span span, String message, int value) {
-        span.addKVAnnotation(message.getBytes(), Bytes.toBytes(Integer.toString(value)));
+        span.addKVAnnotation(message, Integer.toString(value));
     }
 
-    public static Pair<String, String> readAnnotation(byte[] key, byte[] value) {
-        return new Pair<String, String>(new String(key), Bytes.toString(value));
+    public static Pair<String, String> readAnnotation(String key, String value) {
+        return new Pair<String, String>(key, value);
     }
 
     /**

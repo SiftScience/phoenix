@@ -55,8 +55,8 @@ import javax.annotation.Nullable;
 
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.client.Consistency;
-import org.cloudera.htrace.Sampler;
-import org.cloudera.htrace.TraceScope;
+import org.apache.htrace.Sampler;
+import org.apache.htrace.TraceScope;
 import org.apache.phoenix.call.CallRunner;
 import org.apache.phoenix.exception.SQLExceptionCode;
 import org.apache.phoenix.exception.SQLExceptionInfo;

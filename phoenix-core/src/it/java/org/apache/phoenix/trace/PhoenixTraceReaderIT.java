@@ -38,7 +38,7 @@ import org.apache.hadoop.metrics2.MetricsTag;
 import org.apache.phoenix.metrics.MetricInfo;
 import org.apache.phoenix.trace.TraceReader.SpanInfo;
 import org.apache.phoenix.trace.TraceReader.TraceHolder;
-import org.cloudera.htrace.Span;
+import org.apache.htrace.Span;
 import org.junit.Test;
 
 /**
@@ -60,7 +60,7 @@ public class PhoenixTraceReaderIT extends BaseTracingTestIT {
         // create a simple metrics record
         long traceid = 987654;
         MetricsRecord record =
-                createAndFlush(sink, traceid, Span.ROOT_SPAN_ID, 10, "root", 12, 13,
+                createAndFlush(sink, traceid, TraceReader.ROOT_SPAN_ID, 10, "root", 12, 13,
                     "host-name.value", "test annotation for a span");
 
         // start a reader
@@ -93,7 +93,7 @@ public class PhoenixTraceReaderIT extends BaseTracingTestIT {
         long traceid = 12345;
         List<MetricsRecord> records = new ArrayList<MetricsRecord>();
         MetricsRecord record =
-                createAndFlush(sink, traceid, Span.ROOT_SPAN_ID, 7777, "root", 10, 30,
+                createAndFlush(sink, traceid, TraceReader.ROOT_SPAN_ID, 7777, "root", 10, 30,
                     "hostname.value", "root-span tag");
         records.add(record);
 
@@ -148,7 +148,7 @@ public class PhoenixTraceReaderIT extends BaseTracingTestIT {
             Iterator<AbstractMetric> metricIter = record.metrics().iterator();
             assertEquals("Got an unexpected span id", metricIter.next().value(), spanInfo.id);
             long parentId = (Long) metricIter.next().value();
-            if (parentId == Span.ROOT_SPAN_ID) {
+            if (parentId == TraceReader.ROOT_SPAN_ID) {
                 assertNull("Got a parent, but it was a root span!", spanInfo.parent);
             } else {
                 assertEquals("Got an unexpected parent span id", parentId, spanInfo.parent.id);

@@ -24,8 +24,8 @@ import org.apache.hadoop.metrics2.MetricsCollector;
 import org.apache.hadoop.metrics2.MetricsRecordBuilder;
 import org.apache.hadoop.metrics2.MetricsTag;
 import org.apache.hadoop.metrics2.lib.DefaultMetricsSystem;
-import org.cloudera.htrace.Span;
-import org.cloudera.htrace.impl.MilliSpan;
+import org.apache.htrace.Span;
+import org.apache.htrace.impl.MilliSpan;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -90,6 +90,6 @@ public class TraceMetricsSourceTest {
   }
 
   private Span getSpan(){
-    return new MilliSpan("test span", 0, 1 , 2, "pid");
+    return new MilliSpan.Builder().description("test span").traceId(0).parents(new long[]{1}).spanId(2).build();
   }
 }

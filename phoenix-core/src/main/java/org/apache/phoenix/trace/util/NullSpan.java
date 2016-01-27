@@ -21,9 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.cloudera.htrace.Span;
-import org.cloudera.htrace.TimelineAnnotation;
-import org.apache.phoenix.util.StringUtil;
+import org.apache.htrace.Span;
+import org.apache.htrace.TimelineAnnotation;
 
 /**
  * Fake {@link Span} that doesn't save any state, in place of <tt>null</tt> return values, to avoid
@@ -84,8 +83,12 @@ public class NullSpan implements Span {
   }
 
   @Override
-  public long getParentId() {
-    return 0;
+  public String toJson() {
+    return "{\"description\": " + getDescription() + ", \"type\": \"NullSpan\"}";
+  }
+
+  @Override
+  public void setParents(long[] parents) {
   }
 
   @Override
@@ -97,8 +100,21 @@ public class NullSpan implements Span {
   }
 
   @Override
-  public Map<byte[], byte[]> getKVAnnotations() {
+  public void addKVAnnotation(String k, String v) {
+  }
+
+  @Override
+  public void setProcessId(String processId) {
+  }
+
+  @Override
+  public Map<String, String> getKVAnnotations() {
     return Collections.emptyMap();
+  }
+
+  @Override
+  public long[] getParents() {
+    return new long[0];
   }
 
   @Override

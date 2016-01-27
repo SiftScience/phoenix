@@ -22,11 +22,10 @@ import org.apache.hadoop.metrics2.*;
 import org.apache.hadoop.metrics2.lib.Interns;
 import org.apache.phoenix.metrics.MetricInfo;
 import org.apache.phoenix.metrics.Metrics;
-import org.cloudera.htrace.HTraceConfiguration;
-import org.cloudera.htrace.Span;
-import org.cloudera.htrace.SpanReceiver;
-import org.cloudera.htrace.TimelineAnnotation;
-import org.cloudera.htrace.impl.MilliSpan;
+import org.apache.htrace.Span;
+import org.apache.htrace.SpanReceiver;
+import org.apache.htrace.TimelineAnnotation;
+import org.apache.htrace.impl.MilliSpan;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,8 +50,7 @@ import static org.apache.phoenix.metrics.MetricInfo.*;
  *   <li>All Metrics from the same span have the same name (allowing correlation in the sink)</li>
  *   <li>The description of the metric describes what it contains. For instance,
  *   <ul>
- *     <li>{@link MetricInfo#PARENT} is the id of the parent of this span. (Root span is
- *     {@link Span#ROOT_SPAN_ID}).</li>
+ *     <li>{@link MetricInfo#PARENT} is the id of the parent of this span.</li>
  *     <li>{@value MetricInfo#} is the start time of the span</li>
  *     <li>{@value MetricInfo#} is the end time of the span</li>
  *   </ul></li>
@@ -96,7 +94,6 @@ public class TraceMetricSource implements SpanReceiver, MetricsSource {
     Metric builder = new Metric(span);
     // add all the metrics for the span
     builder.addCounter(Interns.info(SPAN.traceName, EMPTY_STRING), span.getSpanId());
-    builder.addCounter(Interns.info(PARENT.traceName, EMPTY_STRING), span.getParentId());
     builder.addCounter(Interns.info(START.traceName, EMPTY_STRING), span.getStartTimeMillis());
     builder.addCounter(Interns.info(END.traceName, EMPTY_STRING), span.getStopTimeMillis());
     // add the tags to the span. They were written in order received so we mark them as such
@@ -107,8 +104,8 @@ public class TraceMetricSource implements SpanReceiver, MetricsSource {
 
     // add the annotations. We assume they are serialized as strings and integers, but that can
     // change in the future
-    Map<byte[], byte[]> annotations = span.getKVAnnotations();
-    for (Entry<byte[], byte[]> annotation : annotations.entrySet()) {
+    Map<String, String> annotations = span.getKVAnnotations();
+    for (Entry<String, String> annotation : annotations.entrySet()) {
       Pair<String, String> val =
           TracingUtils.readAnnotation(annotation.getKey(), annotation.getValue());
       builder.add(new MetricsTag(Interns.info(ANNOTATION.traceName, val.getFirst()), val
@@ -179,11 +176,6 @@ public class TraceMetricSource implements SpanReceiver, MetricsSource {
     public void add(MetricsTag metricsTag) {
       tags.add(metricsTag);
     }
-  }
-
-  @Override
-  public void configure(HTraceConfiguration conf) {
-    // noop
   }
 
 }
